@@ -78,3 +78,7 @@ void ArbolAVL::preOrden(NodoAVL* nodo) {
         preOrden(nodo->derecho);
     }
 }
+
+NodoAVL* ArbolAVL::obtenerRaiz() {
+    return raiz;
+}

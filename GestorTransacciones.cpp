@@ -12,16 +12,50 @@ void GestorTransacciones::registrarTransaccion(Transaccion* transaccion) {
 }
 
 Transaccion* GestorTransacciones::buscarTransaccion(int id) {
-    // Implementación de la búsqueda de transacciones por ID.
-    return nullptr; // Placeholder
+    NodoAVL* nodo = buscarNodoAVL(historialTransacciones.obtenerRaiz(), id);
+    return nodo ? nodo->transaccion : nullptr;
+}
+
+NodoAVL* GestorTransacciones::buscarNodoAVL(NodoAVL* nodo, int id) {
+    if (nodo == nullptr || nodo->transaccion->getId() == id)
+        return nodo;
+
+    if (id < nodo->transaccion->getId())
+        return buscarNodoAVL(nodo->izquierdo, id);
+    else
+        return buscarNodoAVL(nodo->derecho, id);
 }
 
 void GestorTransacciones::detectarTransaccionesSospechosas(double montoLimite) {
-    // Implementación de la detección de transacciones sospechosas.
+    detectarSospechosas(historialTransacciones.obtenerRaiz(), montoLimite);
+}
+
+void GestorTransacciones::detectarSospechosas(NodoAVL* nodo, double montoLimite) {
+    if (nodo == nullptr) return;
+
+    if (nodo->transaccion->getMonto() > montoLimite)
+        transaccionesSospechosas.insertar(nodo->transaccion);
+
+    detectarSospechosas(nodo->izquierdo, montoLimite);
+    detectarSospechosas(nodo->derecho, montoLimite);
 }
 
 void GestorTransacciones::generarReporte() {
-    // Implementación de la generación de reportes.
+    std::ofstream reporte("reporte_sospechosas.txt");
+    if (reporte.is_open()) {
+        generarReporteInOrden(transaccionesSospechosas.obtenerRaiz(), reporte);
+        reporte.close();
+    }
+}
+
+void GestorTransacciones::generarReporteInOrden(NodoABB* nodo, std::ofstream& reporte) {
+    if (nodo != nullptr) {
+        generarReporteInOrden(nodo->izquierdo, reporte);
+        reporte << "ID: " << nodo->transaccion->getId() << ", Origen: " << nodo->transaccion->getCuentaOrigen()
+                << ", Destino: " << nodo->transaccion->getCuentaDestino() << ", Monto: " << nodo->transaccion->getMonto()
+                << ", Ubicación: " << nodo->transaccion->getUbicacion() << ", Fecha y Hora: " << nodo->transaccion->getFechaHora() << std::endl;
+        generarReporteInOrden(nodo->derecho, reporte);
+    }
 }
 
 void GestorTransacciones::cargarDesdeArchivo(const std::string& nombreArchivo) {
@@ -44,7 +78,17 @@ void GestorTransacciones::cargarDesdeArchivo(const std::string& nombreArchivo) {
 void GestorTransacciones::guardarEnArchivo(const std::string& nombreArchivo) {
     std::ofstream archivo(nombreArchivo);
     if (archivo.is_open()) {
-        // Implementación de guardar todas las transacciones en el archivo.
+        guardarEnArchivoInOrden(historialTransacciones.obtenerRaiz(), archivo);
         archivo.close();
+    }
+}
+
+void GestorTransacciones::guardarEnArchivoInOrden(NodoAVL* nodo, std::ofstream& archivo) {
+    if (nodo != nullptr) {
+        guardarEnArchivoInOrden(nodo->izquierdo, archivo);
+        archivo << nodo->transaccion->getId() << " " << nodo->transaccion->getCuentaOrigen() << " "
+                << nodo->transaccion->getCuentaDestino() << " " << nodo->transaccion->getMonto() << " "
+                << nodo->transaccion->getUbicacion() << " " << nodo->transaccion->getFechaHora() << std::endl;
+        guardarEnArchivoInOrden(nodo->derecho, archivo);
     }
 }

@@ -5,12 +5,11 @@
 class ArbolABB {
 private:
     NodoABB* raiz;
-
     NodoABB* insertarNodo(NodoABB* nodo, Transaccion* transaccion);
-    void inOrden(NodoABB* nodo);
+    void inOrden(NodoABB* nodo, std::ofstream& reporte);
 
 public:
     ArbolABB();
     void insertar(Transaccion* transaccion);
-    void mostrarInOrden();
+    NodoABB* obtenerRaiz(); 
 };

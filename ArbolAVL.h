@@ -17,4 +17,5 @@ public:
     ArbolAVL();
     void insertar(Transaccion* transaccion);
     void mostrarPreOrden();
+    NodoAVL* obtenerRaiz(); 
 };
