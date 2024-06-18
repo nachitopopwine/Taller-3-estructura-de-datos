@@ -10,6 +10,7 @@ private:
     void opcionBuscarTransaccion();
     void opcionDetectarTransaccionesSospechosas();
     void opcionGenerarReporte();
+    void opcionModificarFormasDetectarTransaccionesSospechosas();
 
 public:
     void iniciar();

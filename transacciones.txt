@@ -1,2 +1,2 @@
-1 cuentaOrigen1 cuentaDestino1 1000.50 ubicacion1 2024-06-01T12:00:00
-2 cuentaOrigen2 cuentaDestino2 200.00 ubicacion2 2024-06-01T13:00:00
+1 cuentaOrigen1 cuentaDestino1 1000.5 ubicacion1 2024-06-01T12:00:00
+2 cuentaOrigen2 cuentaDestino2 200 ubicacion2 2024-06-01T13:00:005
